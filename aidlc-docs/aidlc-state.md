@@ -4,12 +4,12 @@
 
 - **Project Type**: Brownfield
 - **Start Date**: 2026-05-01T04:44:21Z
-- **Current Stage**: CONSTRUCTION — Code Generation
+- **Current Stage**: CONSTRUCTION — Build and Test
 
 ## Workspace State
 
 - **Existing Code**: Yes
-- **Reverse Engineering Needed**: No (CI tooling change)
+- **Reverse Engineering Needed**: No
 - **Workspace Root**: `/home/runner/work/dzengi-sdk-python/dzengi-sdk-python`
 
 ## Code Location Rules
@@ -27,7 +27,7 @@
 
 ## Stage Progress
 
-### 🔵 INCEPTION PHASE
+### 🔵 INCEPTION PHASE (Run 1 — CI Pipeline)
 
 - [x] Workspace Detection
 - [x] Reverse Engineering — SKIPPED (CI tooling, not needed)
@@ -37,7 +37,7 @@
 - [x] Application Design — SKIPPED (no new components)
 - [x] Units Generation — SKIPPED (single unit)
 
-### 🟢 CONSTRUCTION PHASE
+### 🟢 CONSTRUCTION PHASE (Run 1 — CI Pipeline)
 
 - [x] Functional Design — SKIPPED (clear implementation)
 - [x] NFR Requirements — SKIPPED (no new NFRs)
@@ -45,6 +45,25 @@
 - [x] Infrastructure Design — SKIPPED
 - [x] Code Generation — COMPLETED
 - [x] Build and Test — COMPLETED (18 tests pass, lint clean)
+
+### 🔵 INCEPTION PHASE (Run 2 — E2E Testing)
+
+- [x] Workspace Detection
+- [x] Reverse Engineering — SKIPPED (existing artifacts current)
+- [x] Requirements Analysis (minimal depth)
+- [x] User Stories — SKIPPED (developer tooling)
+- [x] Workflow Planning
+- [x] Application Design — SKIPPED (no new components)
+- [x] Units Generation — SKIPPED (single unit)
+
+### 🟢 CONSTRUCTION PHASE (Run 2 — E2E Testing)
+
+- [x] Functional Design — SKIPPED (clear implementation)
+- [x] NFR Requirements — SKIPPED (no new NFRs)
+- [x] NFR Design — SKIPPED
+- [x] Infrastructure Design — SKIPPED
+- [x] Code Generation — COMPLETED
+- [x] Build and Test — COMPLETED (18 unit tests pass, lint clean, E2E job added)
 
 ### 🟡 OPERATIONS PHASE
 
@@ -56,3 +75,4 @@
 - **Current Stage**: Build and Test — COMPLETE
 - **Next Stage**: N/A
 - **Status**: Complete
+

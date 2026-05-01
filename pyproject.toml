@@ -16,3 +16,8 @@ dev = ["pytest>=7.0.0", "pytest-mock>=3.10.0", "responses>=0.23.0", "flake8>=7.0
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["dzengi_com_client*"]
+
+[tool.pytest.ini_options]
+markers = [
+    "e2e: end-to-end tests that require real API credentials (deselect with '-m \"not e2e\"')",
+]
