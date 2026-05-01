@@ -19,7 +19,7 @@ class BaseAPI:
     def _sign_request(self, params: dict) -> dict:
         params["timestamp"] = int(time.time() * 1000)
         params.setdefault("recvWindow", self._recv_window)
-        query_string = urlencode(sorted(params.items()))
+        query_string = urlencode(params)
         signature = hmac.new(
             self._api_secret.encode("utf-8"),
             query_string.encode("utf-8"),
