@@ -7,8 +7,8 @@ from .api.order import OrderAPI
 
 
 class DzengiClient:
-    LIVE_URL = "https://api-adapter.backend.currency.com/api/v2/"
-    DEMO_URL = "https://demo-api-adapter.backend.currency.com/api/v2/"
+    LIVE_URL = "https://api-adapter.dzengi.com/api/v2/"
+    DEMO_URL = "https://demo-api-adapter.dzengi.com/api/v2/"
 
     def __init__(self, api_key: str = "", api_secret: str = "", testnet: bool = False, recv_window: int = 5000):
         self._api_key = api_key

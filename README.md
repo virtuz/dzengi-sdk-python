@@ -128,4 +128,4 @@ Interval.D1   # "1d"
 
 ## Official Documentation
 
-- [dzengi.com API Docs](https://currency.com/api)
+- [dzengi.com API Docs](https://dzengi.com/api)
