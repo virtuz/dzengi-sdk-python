@@ -23,5 +23,3 @@ def test_get_account_has_balances(demo_client):
     result = demo_client.get_account()
     assert "balances" in result, "Response must contain 'balances' key"
     assert isinstance(result["balances"], list), "'balances' must be a list"
-
-
