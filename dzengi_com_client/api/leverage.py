@@ -6,7 +6,30 @@ class LeverageAPI(BaseAPI):
         params = {}
         if recv_window is not None:
             params["recvWindow"] = recv_window
-        return self._get("tradingPositions", params=params, signed=True)
+        resp = self._get("tradingPositions", params=params, signed=True)
+
+        if isinstance(resp, list):
+            positions = resp
+        elif isinstance(resp, dict):
+            if isinstance(resp.get("positions"), list):
+                positions = resp["positions"]
+            elif isinstance(resp.get("data"), dict) and isinstance(resp["data"].get("positions"), list):
+                positions = resp["data"]["positions"]
+            else:
+                positions = []
+        else:
+            positions = []
+
+        def _normalize_position(p):
+            if "positionId" not in p:
+                p = dict(p)
+                if "id" in p:
+                    p["positionId"] = p.pop("id")
+                elif "position_id" in p:
+                    p["positionId"] = p.pop("position_id")
+            return p
+
+        return [_normalize_position(p) for p in positions]
 
     def get_trading_positions_history(self, start_time=None, end_time=None, limit: int = 500, recv_window=None):
         params = {"startTime": start_time, "endTime": end_time, "limit": limit}

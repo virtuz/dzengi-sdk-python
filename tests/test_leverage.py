@@ -24,6 +24,32 @@ def test_get_trading_positions(client):
 
 
 @responses_lib.activate
+def test_get_trading_positions_with_positions_envelope(client):
+    responses_lib.add(
+        responses_lib.GET,
+        LIVE_URL + "tradingPositions",
+        json={"positions": [{"positionId": "101", "symbol": "ETH/USD"}]},
+    )
+    result = client.get_trading_positions()
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert result[0]["positionId"] == "101"
+
+
+@responses_lib.activate
+def test_get_trading_positions_with_data_positions_envelope(client):
+    responses_lib.add(
+        responses_lib.GET,
+        LIVE_URL + "tradingPositions",
+        json={"data": {"positions": [{"positionId": "202", "symbol": "LTC/USD"}]}},
+    )
+    result = client.get_trading_positions()
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert result[0]["positionId"] == "202"
+
+
+@responses_lib.activate
 def test_close_trading_position(client):
     responses_lib.add(
         responses_lib.POST,
