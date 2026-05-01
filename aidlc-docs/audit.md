@@ -65,11 +65,45 @@
 
 ---
 
-## Code Generation — E2E Tests
+## New Request — Fix timestamp mismatch (-1021) on signed API calls
 
-**Timestamp**: 2026-05-01T14:12:37Z
-**Unit**: e2e-test
-**Plan**: Create `tests/e2e/__init__.py` and `tests/e2e/test_e2e_account.py`; update `ci.yml` with `e2e-test` job; add pytest marker config to `pyproject.toml`
+**Timestamp**: 2026-05-01T17:53:47Z
+**User Request**: "Using AI-DLC, solve the issue: Sometimes get_account returns exception: DzengiAPIException: [400] code=-1021: Your time doesn't match server time"
+**Depth**: Minimal — root cause clear (local clock drift), fix well-scoped
+**Extensions**: Security Baseline — SKIP; Property-Based Testing — SKIP
 **Status**: In progress
 
 ---
+
+## Workflow Planning — Timestamp Fix
+
+**Timestamp**: 2026-05-01T17:53:47Z
+**Stages to Execute**: Code Generation, Build and Test
+**Stages Skipped**: All inception conditionals, all per-unit design stages
+**Risk Level**: Low
+**Status**: Auto-approved
+
+---
+
+## Code Generation — Timestamp Fix
+
+**Timestamp**: 2026-05-01T17:53:47Z
+**Unit**: timestamp-sync
+**Plan**:
+- Add `_time_offset = 0` to `BaseAPI.__init__`
+- Add `_sync_time()` method (fetches `/time`, calculates offset)
+- Update `_sign_request` to apply `_time_offset`
+- Update `_request` to auto-retry on -1021 after syncing time
+- Add 2 new tests in `tests/test_client.py`
+**Status**: Complete
+
+---
+
+## Build and Test — Timestamp Fix
+
+**Timestamp**: 2026-05-01T17:53:47Z
+**Result**: 20 unit tests pass, lint clean
+**Status**: Complete
+
+---
+
