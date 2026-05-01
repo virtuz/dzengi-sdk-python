@@ -104,9 +104,6 @@ class DzengiClient:
         return self._order.cancel_order(symbol, order_id, orig_client_order_id, recv_window)
 
     # Leverage endpoints
-    def get_positions(self, recv_window=None):
-        return self._leverage.get_trading_positions(recv_window)
-
     def get_trading_positions(self, recv_window=None):
         return self._leverage.get_trading_positions(recv_window)
 

@@ -12,18 +12,6 @@ def client():
 
 
 @responses_lib.activate
-def test_get_positions(client):
-    responses_lib.add(
-        responses_lib.GET,
-        LIVE_URL + "tradingPositions",
-        json=[{"positionId": "123", "symbol": "ETH/USD"}],
-    )
-    result = client.get_positions()
-    assert len(result) == 1
-    assert result[0]["positionId"] == "123"
-
-
-@responses_lib.activate
 def test_get_trading_positions(client):
     responses_lib.add(
         responses_lib.GET,
