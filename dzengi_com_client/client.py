@@ -21,7 +21,8 @@ class DzengiClient:
             "Content-Type": "application/x-www-form-urlencoded",
         })
 
-        kwargs = dict(api_key=api_key, api_secret=api_secret, base_url=base_url, session=session, recv_window=recv_window)
+        kwargs = dict(api_key=api_key, api_secret=api_secret, base_url=base_url,
+                      session=session, recv_window=recv_window)
         self._market = MarketAPI(**kwargs)
         self._account = AccountAPI(**kwargs)
         self._order = OrderAPI(**kwargs)
@@ -50,7 +51,8 @@ class DzengiClient:
     def get_account(self, recv_window=None):
         return self._account.get_account(recv_window)
 
-    def get_my_trades(self, symbol: str, limit: int = 500, from_id=None, start_time=None, end_time=None, recv_window=None):
+    def get_my_trades(self, symbol: str, limit: int = 500, from_id=None,
+                      start_time=None, end_time=None, recv_window=None):
         return self._account.get_my_trades(symbol, limit, from_id, start_time, end_time, recv_window)
 
     def get_funding_limits(self, recv_window=None):
@@ -74,7 +76,8 @@ class DzengiClient:
     def get_deposits(self, coin=None, status=None, start_time=None, end_time=None, limit: int = 500, recv_window=None):
         return self._account.get_deposits(coin, status, start_time, end_time, limit, recv_window)
 
-    def get_withdrawals(self, coin=None, status=None, start_time=None, end_time=None, limit: int = 500, recv_window=None):
+    def get_withdrawals(self, coin=None, status=None, start_time=None,
+                        end_time=None, limit: int = 500, recv_window=None):
         return self._account.get_withdrawals(coin, status, start_time, end_time, limit, recv_window)
 
     def get_transactions(self, start_time=None, end_time=None, limit: int = 500, recv_window=None):
@@ -87,8 +90,12 @@ class DzengiClient:
     def get_order(self, symbol: str, order_id=None, orig_client_order_id=None, recv_window=None):
         return self._order.get_order(symbol, order_id, orig_client_order_id, recv_window)
 
-    def create_order(self, symbol: str, side, order_type, quantity, price=None, stop_price=None, time_in_force=None, new_client_order_id=None, recv_window=None):
-        return self._order.create_order(symbol, side, order_type, quantity, price, stop_price, time_in_force, new_client_order_id, recv_window)
+    def create_order(self, symbol: str, side, order_type, quantity,
+                     price=None, stop_price=None, time_in_force=None,
+                     new_client_order_id=None, recv_window=None):
+        return self._order.create_order(
+            symbol, side, order_type, quantity, price, stop_price,
+            time_in_force, new_client_order_id, recv_window)
 
     def edit_order(self, symbol: str, order_id, quantity=None, price=None, recv_window=None):
         return self._order.edit_order(symbol, order_id, quantity, price, recv_window)
