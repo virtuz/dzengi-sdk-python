@@ -18,7 +18,9 @@ class OrderAPI(BaseAPI):
             params["recvWindow"] = recv_window
         return self._get("fetchOrder", params=params, signed=True)
 
-    def create_order(self, symbol: str, side, order_type, quantity, price=None, stop_price=None, time_in_force=None, new_client_order_id=None, recv_window=None):
+    def create_order(self, symbol: str, side, order_type, quantity,
+                     price=None, stop_price=None, time_in_force=None,
+                     new_client_order_id=None, recv_window=None):
         data = {
             "symbol": symbol,
             "side": str(side),
