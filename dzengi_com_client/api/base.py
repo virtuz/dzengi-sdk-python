@@ -15,9 +15,18 @@ class BaseAPI:
         self._base_url = base_url
         self._session = session
         self._recv_window = recv_window
+        self._time_offset = 0
+
+    def _sync_time(self):
+        try:
+            response = self._session.get(self._base_url + "time")
+            server_time = response.json()["serverTime"]
+            self._time_offset = server_time - int(time.time() * 1000)
+        except Exception:
+            pass
 
     def _sign_request(self, params: dict) -> dict:
-        params["timestamp"] = int(time.time() * 1000)
+        params["timestamp"] = int(time.time() * 1000) + self._time_offset
         params.setdefault("recvWindow", self._recv_window)
         query_string = urlencode(params)
         signature = hmac.new(
@@ -38,33 +47,40 @@ class BaseAPI:
 
     def _request(self, method: str, endpoint: str, signed: bool, **kwargs):
         url = self._base_url + endpoint
-        params = kwargs.get("params") or {}
-        data = kwargs.get("data") or {}
 
-        params = {k: v for k, v in params.items() if v is not None}
-        data = {k: v for k, v in data.items() if v is not None}
+        for attempt in range(2):
+            params = {k: v for k, v in (kwargs.get("params") or {}).items() if v is not None}
+            data = {k: v for k, v in (kwargs.get("data") or {}).items() if v is not None}
 
-        if signed:
-            if method in ("POST", "PUT") and data:
-                data = self._sign_request(data)
-            else:
-                params = self._sign_request(params)
+            if signed:
+                if method in ("POST", "PUT") and data:
+                    data = self._sign_request(data)
+                else:
+                    params = self._sign_request(params)
 
-        try:
-            if method == "GET":
-                response = self._session.get(url, params=params)
-            elif method == "POST":
-                response = self._session.post(url, data=data, params=params)
-            elif method == "PUT":
-                response = self._session.put(url, data=data, params=params)
-            elif method == "DELETE":
-                response = self._session.delete(url, params=params)
-            else:
-                raise ValueError(f"Unsupported HTTP method: {method}")
-        except requests.exceptions.RequestException as e:
-            raise DzengiRequestException(str(e))
+            try:
+                if method == "GET":
+                    response = self._session.get(url, params=params)
+                elif method == "POST":
+                    response = self._session.post(url, data=data, params=params)
+                elif method == "PUT":
+                    response = self._session.put(url, data=data, params=params)
+                elif method == "DELETE":
+                    response = self._session.delete(url, params=params)
+                else:
+                    raise ValueError(f"Unsupported HTTP method: {method}")
+            except requests.exceptions.RequestException as e:
+                raise DzengiRequestException(str(e))
 
-        return self._handle_response(response)
+            if signed and attempt == 0 and response.status_code == 400:
+                try:
+                    if response.json().get("code") == -1021:
+                        self._sync_time()
+                        continue
+                except Exception:
+                    pass
+
+            return self._handle_response(response)
 
     def _get(self, endpoint, params=None, signed=False):
         return self._request("GET", endpoint, signed, params=params or {})
