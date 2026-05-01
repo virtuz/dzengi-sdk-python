@@ -99,10 +99,43 @@
 
 ---
 
-## Build and Test — Timestamp Fix
+## New Request — E2E Test for get_positions
 
-**Timestamp**: 2026-05-01T17:53:47Z
-**Result**: 20 unit tests pass, lint clean
+**Timestamp**: 2026-05-01T19:36:01Z
+**User Request**: "Using AI-DLC, implement e2e test of get_positions method"
+**Depth**: Minimal — request is clear and well-scoped
+**Extensions**: Security Baseline — SKIP (already decided); Property-Based Testing — SKIP (already decided)
+**Finding**: `get_positions` not present in SDK; added as alias for `get_trading_positions` in `DzengiClient`
+**Status**: In progress
+
+---
+
+## Workflow Planning — get_positions E2E Test
+
+**Timestamp**: 2026-05-01T19:36:01Z
+**Stages to Execute**: Code Generation, Build and Test
+**Stages Skipped**: All inception conditionals, all per-unit design stages
+**Risk Level**: Low
+**Status**: Auto-approved
+
+---
+
+## Code Generation — get_positions E2E Test
+
+**Timestamp**: 2026-05-01T19:36:01Z
+**Unit**: get-positions-e2e
+**Plan**:
+- Add `get_positions(recv_window=None)` to `DzengiClient` (delegates to `_leverage.get_trading_positions`)
+- Add unit test `test_get_positions` in `tests/test_leverage.py`
+- Create `tests/e2e/test_e2e_positions.py` with two e2e tests
+**Status**: Complete
+
+---
+
+## Build and Test — get_positions E2E Test
+
+**Timestamp**: 2026-05-01T19:36:01Z
+**Result**: 21 unit tests pass, lint clean
 **Status**: Complete
 
 ---
