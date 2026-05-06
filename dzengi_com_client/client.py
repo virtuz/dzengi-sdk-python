@@ -91,17 +91,20 @@ class DzengiClient:
         return self._order.get_order(symbol, order_id, orig_client_order_id, recv_window)
 
     def create_order(self, symbol: str, side, order_type, quantity,
-                     price=None, stop_price=None, time_in_force=None,
-                     new_client_order_id=None, recv_window=None):
+                     price=None, account_id=None, expire_timestamp=None,
+                     guaranteed_stop_loss=None, leverage=None, profit_distance=None,
+                     stop_distance=None, stop_loss=None, take_profit=None,
+                     trailing_stop_loss=None, new_order_resp_type=None, recv_window=None):
         return self._order.create_order(
-            symbol, side, order_type, quantity, price, stop_price,
-            time_in_force, new_client_order_id, recv_window)
+            symbol, side, order_type, quantity, price, account_id, expire_timestamp,
+            guaranteed_stop_loss, leverage, profit_distance, stop_distance, stop_loss,
+            take_profit, trailing_stop_loss, new_order_resp_type, recv_window)
 
-    def edit_order(self, symbol: str, order_id, quantity=None, price=None, recv_window=None):
-        return self._order.edit_order(symbol, order_id, quantity, price, recv_window)
+    def edit_order(self, order_id: str, price=None, expire_timestamp=None, recv_window=None):
+        return self._order.edit_order(order_id, price, expire_timestamp, recv_window)
 
-    def cancel_order(self, symbol: str, order_id=None, orig_client_order_id=None, recv_window=None):
-        return self._order.cancel_order(symbol, order_id, orig_client_order_id, recv_window)
+    def cancel_order(self, symbol: str, order_id: str, recv_window=None):
+        return self._order.cancel_order(symbol, order_id, recv_window)
 
     # Leverage endpoints
     def get_trading_positions(self, recv_window=None):
