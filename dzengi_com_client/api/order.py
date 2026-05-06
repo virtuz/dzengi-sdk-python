@@ -25,8 +25,8 @@ class OrderAPI(BaseAPI):
                      trailing_stop_loss=None, new_order_resp_type=None, recv_window=None):
         data = {
             "symbol": symbol,
-            "side": str(side),
-            "type": str(order_type),
+            "side": side.value if hasattr(side, "value") else side,
+            "type": order_type.value if hasattr(order_type, "value") else order_type,
             "quantity": quantity,
             "price": price,
             "accountId": account_id,

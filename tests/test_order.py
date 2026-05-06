@@ -48,6 +48,10 @@ def test_create_order(client):
         price=50000,
     )
     assert result["orderId"] == "456"
+    body = dict(pair.split("=") for pair in responses_lib.calls[0].request.body.split("&")
+                if "=" in pair)
+    assert body.get("side") == "BUY"
+    assert body.get("type") == "LIMIT"
 
 
 @responses_lib.activate
