@@ -8,10 +8,14 @@ def _has_real_handler(logger):
     return any(not isinstance(handler, logging.NullHandler) for handler in logger.handlers)
 
 
+def _has_null_handler(logger):
+    return any(isinstance(handler, logging.NullHandler) for handler in logger.handlers)
+
+
 def get_sdk_logger(logger=None, debug: bool = False):
     sdk_logger = logger or logging.getLogger(LOGGER_NAME)
 
-    if logger is None and not any(isinstance(handler, logging.NullHandler) for handler in sdk_logger.handlers):
+    if logger is None and not _has_null_handler(sdk_logger):
         sdk_logger.addHandler(logging.NullHandler())
 
     if logger is None:

@@ -60,7 +60,7 @@ class BaseAPI:
 
         try:
             payload = response.json()
-        except ValueError:
+        except Exception:
             payload = response.text
 
         self._logger.debug(
