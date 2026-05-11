@@ -1,5 +1,6 @@
 import requests
 
+from .logger import get_sdk_logger
 from .api.account import AccountAPI
 from .api.leverage import LeverageAPI
 from .api.market import MarketAPI
@@ -10,10 +11,12 @@ class DzengiClient:
     LIVE_URL = "https://api-adapter.dzengi.com/api/v2/"
     DEMO_URL = "https://demo-api-adapter.dzengi.com/api/v2/"
 
-    def __init__(self, api_key: str = "", api_secret: str = "", testnet: bool = False, recv_window: int = 5000):
+    def __init__(self, api_key: str = "", api_secret: str = "", testnet: bool = False, recv_window: int = 5000,
+                 logger=None, debug: bool = False):
         self._api_key = api_key
         self._api_secret = api_secret
         base_url = self.DEMO_URL if testnet else self.LIVE_URL
+        sdk_logger = get_sdk_logger(logger=logger, debug=debug)
 
         session = requests.Session()
         session.headers.update({
@@ -22,7 +25,7 @@ class DzengiClient:
         })
 
         kwargs = dict(api_key=api_key, api_secret=api_secret, base_url=base_url,
-                      session=session, recv_window=recv_window)
+                      session=session, recv_window=recv_window, logger=sdk_logger, debug=debug)
         self._market = MarketAPI(**kwargs)
         self._account = AccountAPI(**kwargs)
         self._order = OrderAPI(**kwargs)

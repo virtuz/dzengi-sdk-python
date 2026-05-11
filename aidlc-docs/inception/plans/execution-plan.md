@@ -4,32 +4,32 @@
 
 ### Transformation Scope
 
-- **Transformation Type**: Single configuration file addition
-- **Primary Changes**: New GitHub Actions workflow file; add flake8 to dev dependencies
-- **Related Components**: None — purely additive
+- **Transformation Type**: Small SDK enhancement
+- **Primary Changes**: Add logger wiring in client/bootstrap path, add request/response debug logging in shared API layer, add tests and docs
+- **Related Components**: `dzengi_com_client/client.py`, `dzengi_com_client/api/base.py`, `tests/test_client.py`, `README.md`
 
 ### Change Impact Assessment
 
-- **User-facing changes**: No
-- **Structural changes**: No
+- **User-facing changes**: Yes — optional debug logging support
+- **Structural changes**: Minimal
 - **Data model changes**: No
-- **API changes**: No
-- **NFR impact**: No
+- **API changes**: Small constructor enhancement
+- **NFR impact**: Observability improvement
 
 ### Risk Assessment
 
 - **Risk Level**: Low
-- **Rollback Complexity**: Easy (delete the workflow file)
-- **Testing Complexity**: Simple (validate YAML syntax, check workflow runs)
+- **Rollback Complexity**: Easy (revert logger wiring and tests)
+- **Testing Complexity**: Simple (unit tests + lint)
 
 ## Phases to Execute
 
 ### 🔵 INCEPTION PHASE
 
 - [x] Workspace Detection (COMPLETED)
-- [x] Reverse Engineering (SKIPPED — CI tooling)
+- [x] Reverse Engineering (SKIPPED — existing artifacts current)
 - [x] Requirements Analysis (COMPLETED)
-- [x] User Stories (SKIPPED — no user personas)
+- [x] User Stories (SKIPPED — single SDK enhancement)
 - [x] Workflow Planning (COMPLETED)
 - [x] Application Design (SKIPPED — no new components)
 - [x] Units Generation (SKIPPED — single unit)
@@ -40,10 +40,10 @@
 - [x] NFR Requirements (SKIPPED — no new NFRs)
 - [x] NFR Design (SKIPPED)
 - [x] Infrastructure Design (SKIPPED)
-- [ ] Code Generation — EXECUTE
-  - **Rationale**: Create `.github/workflows/ci.yml` and update `pyproject.toml`
-- [ ] Build and Test — EXECUTE
-  - **Rationale**: Validate workflow YAML and run tests locally
+- [x] Code Generation — EXECUTED
+  - **Rationale**: Add opt-in logger support, debug request/response logging, tests, and docs
+- [x] Build and Test — EXECUTED
+  - **Rationale**: Validate unit tests and lint after the SDK change
 
 ### 🟡 OPERATIONS PHASE
 
@@ -51,11 +51,12 @@
 
 ## Success Criteria
 
-- **Primary Goal**: Working CI pipeline that lints and tests on PRs and merges to main
+- **Primary Goal**: Opt-in SDK debug logging that exposes request/response details safely
 - **Key Deliverables**:
-  - `.github/workflows/ci.yml`
-  - `pyproject.toml` updated with `flake8` dev dependency
+  - `DzengiClient(..., debug=True)` support
+  - Redacted request/response logging in `BaseAPI`
+  - Unit tests covering debug logging behavior
+  - README usage guidance
 - **Quality Gates**:
-  - YAML syntax valid
   - Local `pytest` passes
   - Local `flake8` passes

@@ -1,3 +1,6 @@
+import io
+import logging
+
 import pytest
 import responses as responses_lib
 
@@ -12,6 +15,15 @@ def client():
 @pytest.fixture
 def demo_client():
     return DzengiClient(api_key="test_key", api_secret="test_secret", testnet=True)
+
+
+def make_test_logger():
+    stream = io.StringIO()
+    logger = logging.Logger("dzengi-test-logger", level=logging.DEBUG)
+    handler = logging.StreamHandler(stream)
+    handler.setFormatter(logging.Formatter("%(message)s"))
+    logger.addHandler(handler)
+    return logger, stream
 
 
 def test_client_init(client):
@@ -41,6 +53,42 @@ def test_api_exception_on_error():
     assert exc_info.value.status_code == 400
     assert exc_info.value.code == -1121
     assert "Invalid symbol" in exc_info.value.message
+
+
+@responses_lib.activate
+def test_debug_logging_includes_redacted_request_and_response_details():
+    responses_lib.add(
+        responses_lib.GET,
+        DzengiClient.LIVE_URL + "account",
+        json={"balances": [], "accountType": "SPOT"},
+    )
+    logger, stream = make_test_logger()
+
+    client = DzengiClient(api_key="test_key", api_secret="test_secret", logger=logger, debug=True)
+    client.get_account()
+
+    output = stream.getvalue()
+    assert "Request: GET https://api-adapter.dzengi.com/api/v2/account" in output
+    assert '"signature": "<redacted>"' in output
+    assert "test_secret" not in output
+    assert "test_key" not in output
+    assert "Response: GET https://api-adapter.dzengi.com/api/v2/account status=200" in output
+    assert '"balances": []' in output
+
+
+@responses_lib.activate
+def test_debug_logging_is_disabled_by_default():
+    responses_lib.add(
+        responses_lib.GET,
+        DzengiClient.LIVE_URL + "time",
+        json={"serverTime": 1699900000000},
+    )
+    logger, stream = make_test_logger()
+
+    client = DzengiClient(api_key="test_key", api_secret="test_secret", logger=logger)
+    client.get_server_time()
+
+    assert stream.getvalue() == ""
 
 
 @responses_lib.activate
