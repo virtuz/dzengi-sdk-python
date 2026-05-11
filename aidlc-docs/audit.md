@@ -140,3 +140,44 @@
 
 ---
 
+## New Request — SDK Debug Logger
+
+**Timestamp**: 2026-05-11T18:57:48Z
+**User Request**: "Using AI-DLC, implement dzengi-sdk logger with debug logging to see request and response details"
+**Depth**: Minimal — request is clear and scoped to SDK observability
+**Extensions**: Security Baseline — SKIP (already decided); Property-Based Testing — SKIP (already decided)
+**Status**: In progress
+
+---
+
+## Workflow Planning — SDK Debug Logger
+
+**Timestamp**: 2026-05-11T18:57:48Z
+**Stages to Execute**: Code Generation, Build and Test
+**Stages Skipped**: Reverse Engineering, User Stories, Application Design, Units Generation, Functional Design, NFR Requirements, NFR Design, Infrastructure Design
+**Risk Level**: Low
+**Status**: Auto-approved
+
+---
+
+## Code Generation — SDK Debug Logger
+
+**Timestamp**: 2026-05-11T18:57:48Z
+**Unit**: sdk-debug-logger
+**Plan**:
+- Add opt-in SDK logger support to `DzengiClient`
+- Log request/response payload details in `BaseAPI` when debug logging is enabled
+- Redact sensitive request fields such as request signatures and secrets
+- Add unit tests for debug logging behavior
+- Update README usage documentation
+**Status**: Complete
+
+---
+
+## Build and Test — SDK Debug Logger
+
+**Timestamp**: 2026-05-11T18:57:48Z
+**Result**: 26 unit tests pass, lint clean
+**Status**: Complete
+
+---

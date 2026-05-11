@@ -2,33 +2,30 @@
 
 ## Intent Analysis
 
-- **User Request**: Implement a GitHub Actions pipeline that executes linting and unit testing for pull requests and merges into main
-- **Request Type**: Infrastructure / Developer Tooling
-- **Scope**: Single configuration file (`.github/workflows/ci.yml`) + minor `pyproject.toml` update
+- **User Request**: Implement dzengi-sdk logger with debug logging to see request and response details
+- **Request Type**: SDK enhancement / observability
+- **Scope**: Client initialization, shared request layer, unit tests, README
 - **Complexity**: Simple
 
 ## Functional Requirements
 
-1. **FR-1**: A GitHub Actions workflow must be created at `.github/workflows/ci.yml`
-2. **FR-2**: The workflow must trigger on:
-   - Pull requests targeting the `main` branch
-   - Pushes to the `main` branch (merges)
-3. **FR-3**: The workflow must include a **linting** job that runs a Python linter against the source code
-4. **FR-4**: The workflow must include a **unit testing** job that runs the existing `pytest` test suite
-5. **FR-5**: Both jobs must run on `ubuntu-latest`
-6. **FR-6**: Dependencies must be installed using the project's existing `pyproject.toml` (including dev extras)
+1. **FR-1**: `DzengiClient` must expose an opt-in way to enable SDK debug logging.
+2. **FR-2**: When debug logging is enabled, outbound SDK requests must log request details.
+3. **FR-3**: When debug logging is enabled, inbound SDK responses must log response details.
+4. **FR-4**: Sensitive request values, including signatures and secrets, must not appear in debug logs.
+5. **FR-5**: Existing SDK behavior must remain unchanged when debug logging is not enabled.
+6. **FR-6**: Public documentation must describe how to enable SDK debug logging.
 
 ## Non-Functional Requirements
 
-1. **NFR-1**: Pipeline must be fast — no unnecessary caching layers beyond pip cache
-2. **NFR-2**: Linting configuration must be consistent with the existing project style
-3. **NFR-3**: The workflow file must be valid YAML and pass GitHub Actions schema validation
+1. **NFR-1**: The solution must use Python's standard logging framework.
+2. **NFR-2**: Debug logging must be low overhead when disabled.
+3. **NFR-3**: The implementation must preserve compatibility with the existing supported Python versions.
 
 ## Technical Context
 
 - **Language**: Python (>=3.8)
-- **Build System**: setuptools / pyproject.toml
-- **Test Runner**: pytest
-- **Existing dev deps**: pytest, pytest-mock, responses
-- **Linting tool to add**: flake8 (standard, no config needed for a simple SDK)
-- **Trigger events**: `pull_request` (base: main) + `push` (branch: main)
+- **Package**: `dzengi_com_client`
+- **Request Layer**: `dzengi_com_client/api/base.py`
+- **Client Entry Point**: `dzengi_com_client/client.py`
+- **Testing Strategy**: `pytest` with `responses` mocks

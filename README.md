@@ -27,6 +27,9 @@ client = DzengiClient(api_key="your_api_key", api_secret="your_api_secret")
 # Demo/testnet mode
 demo_client = DzengiClient(api_key="your_api_key", api_secret="your_api_secret", testnet=True)
 
+# Enable SDK debug logging for request/response tracing
+debug_client = DzengiClient(api_key="your_api_key", api_secret="your_api_secret", debug=True)
+
 # Public endpoints (no auth required)
 server_time = client.get_server_time()
 exchange_info = client.get_exchange_info()
@@ -55,6 +58,28 @@ client.cancel_order("BTC/USD", order_id=order["orderId"])
 positions = client.get_trading_positions()
 client.close_trading_position(positions[0]["positionId"])
 ```
+
+## Debug Logging
+
+Enable SDK debug logging to inspect request and response details:
+
+```python
+import logging
+
+logger = logging.getLogger("dzengi-demo")
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler())
+
+client = DzengiClient(
+    api_key="your_api_key",
+    api_secret="your_api_secret",
+    logger=logger,
+    debug=True,
+)
+```
+
+When debug logging is enabled, the SDK logs outbound requests and inbound responses. Sensitive request fields such as
+API secrets and request signatures are automatically redacted from the logs.
 
 ## API Reference
 
