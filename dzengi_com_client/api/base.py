@@ -9,6 +9,8 @@ import requests
 
 from ..exceptions import DzengiAPIException, DzengiRequestException
 
+JSONDecodeError = getattr(requests.exceptions, "JSONDecodeError", ValueError)
+
 
 class BaseAPI:
     _REDACTED_FIELDS = {"signature", "api_key", "api_secret"}
@@ -60,7 +62,7 @@ class BaseAPI:
 
         try:
             payload = response.json()
-        except Exception:
+        except (ValueError, JSONDecodeError):
             payload = response.text
 
         self._logger.debug(
@@ -78,7 +80,7 @@ class BaseAPI:
             self._time_offset = server_time - int(time.time() * 1000)
             if self._should_log_debug():
                 self._logger.debug("Synchronized server time offset=%sms", self._time_offset)
-        except Exception as exc:
+        except (requests.exceptions.RequestException, KeyError, ValueError, JSONDecodeError) as exc:
             if self._should_log_debug():
                 self._logger.debug("Failed to synchronize server time: %s", exc)
 
