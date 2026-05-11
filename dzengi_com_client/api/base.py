@@ -11,7 +11,7 @@ from ..exceptions import DzengiAPIException, DzengiRequestException
 
 
 class BaseAPI:
-    _REDACTED_FIELDS = {"signature", "api_key", "api_secret", "x-mbx-apikey"}
+    _REDACTED_FIELDS = {"signature", "api_key", "api_secret"}
 
     def __init__(self, api_key, api_secret, base_url, session, recv_window=5000, logger=None, debug: bool = False):
         self._api_key = api_key
